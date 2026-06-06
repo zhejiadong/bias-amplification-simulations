@@ -1,6 +1,6 @@
 # Bias Amplification Simulations
 
-This repository provides a public, reproducible implementation of the simulation study in Section 3 of the master's thesis:
+This repository contains the public simulation code accompanying Section 3 of the master's thesis:
 
 Dong, Zhejia, "Measuring Bias Amplification in a Linear Model When Instrumental Variables are Related to Measured Confounding" (2023). Biostatistics Theses and Dissertations. Brown Digital Repository. Brown University Library. https://repository.library.brown.edu/studio/item/bdr:kwzzjyx8/
 

@@ -1,6 +1,6 @@
 cff-version: 1.2.0
-title: "Bias amplification simulations"
-message: "If you use this repository, please cite the software and the underlying master thesis."
+title: "Bias Amplification Simulations"
+message: "If you use this repository, please cite both the software and the underlying master's thesis."
 authors:
   - family-names: "Dong"
     given-names: "Zhejia"
