@@ -25,15 +25,13 @@ Included:
 - simulation code only
 - synthetic summary CSV outputs
 - synthetic figure PDFs
-- tests and documentation
+- tests and user-facing documentation in this README
 
 Excluded:
 - NICHD SECCYD data and any derivatives
 - IRB / institutional documents
 - signature pages and proposal forms
 - old exploratory files and giant intermediate `.RData` objects
-
-See `docs/upload_audit.md` for the upload checklist.
 
 ## Thesis model used here
 
@@ -65,7 +63,6 @@ For both simulations, the code compares:
 - `tests/testthat/`: smoke tests and scientific sanity checks
 - `outputs/`: lightweight CSV summaries
 - `figures/`: generated PDF figures
-- `docs/`: planning and upload audit notes
 
 ## Improvements over the original thesis code
 
