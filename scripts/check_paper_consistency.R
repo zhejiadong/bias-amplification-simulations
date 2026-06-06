@@ -12,6 +12,20 @@ spearman_corr <- function(x, y) {
   suppressWarnings(cor(x, y, method = "spearman"))
 }
 
+print_summary_table <- function(title, df) {
+  cat(sprintf("\n%s\n", title))
+  for (i in seq_len(nrow(df))) {
+    row <- df[i, ]
+    cat(sprintf(
+      "- %-42s empirical=%-10s theoretical=%-10s target=%s\n",
+      row$metric,
+      row$empirical,
+      row$theoretical,
+      row$target
+    ))
+  }
+}
+
 alpha_results <- run_alpha_z_simulation(
   nsamp = args$nsamp,
   nsim = args$nsim,
@@ -52,6 +66,10 @@ alpha_empirical_edge_gap <- mean(alpha_empirical_gap[c(1, nrow(alpha_results))])
 alpha_theoretical_edge_gap <- mean(alpha_theoretical_gap[c(1, nrow(alpha_results))])
 alpha_empirical_center_gap <- alpha_empirical_gap[alpha_mid]
 alpha_theoretical_center_gap <- alpha_theoretical_gap[alpha_mid]
+sigma_crude_spearman_emp <- spearman_corr(sigma_results$scenario_value, sigma_results$empirical_crude)
+sigma_crude_spearman_theory <- spearman_corr(sigma_results$scenario_value, sigma_results$theoretical_crude)
+sigma_gap_spearman_emp <- spearman_corr(sigma_results$scenario_value, sigma_empirical_gap)
+sigma_gap_spearman_theory <- spearman_corr(sigma_results$scenario_value, sigma_theoretical_gap)
 
 checks <- list(
   alpha_grid_rows = nrow(alpha_results) == 21,
@@ -86,6 +104,70 @@ checks <- list(
   sigma_adjusted_theoretical_is_flatter_than_crude = sigma_theoretical_flat_ratio < 0.25
 )
 
+figure2_summary <- data.frame(
+  metric = c(
+    "peak crude bias at alpha_z = 0",
+    "crude increases on alpha_z <= 0",
+    "crude decreases on alpha_z >= 0",
+    "adjusted flatter than crude",
+    "edge amplification exceeds center"
+  ),
+  empirical = c(
+    sprintf("%.1f", alpha_peak_empirical),
+    ifelse(all(diff(alpha_results$empirical_crude[alpha_left]) >= -1e-6), "pass", "fail"),
+    ifelse(all(diff(alpha_results$empirical_crude[alpha_right]) <= 1e-6), "pass", "fail"),
+    sprintf("%.4f", alpha_empirical_flat_ratio),
+    sprintf("%.4f vs %.4f", alpha_empirical_edge_gap, alpha_empirical_center_gap)
+  ),
+  theoretical = c(
+    sprintf("%.1f", alpha_peak_theoretical),
+    ifelse(all(diff(alpha_results$theoretical_crude[alpha_left]) >= -1e-6), "pass", "fail"),
+    ifelse(all(diff(alpha_results$theoretical_crude[alpha_right]) <= 1e-6), "pass", "fail"),
+    sprintf("%.4f", alpha_theoretical_flat_ratio),
+    sprintf("%.4f vs %.4f", alpha_theoretical_edge_gap, alpha_theoretical_center_gap)
+  ),
+  target = c(
+    "0.0",
+    "monotone increase",
+    "monotone decrease",
+    "flatness ratio < 0.25",
+    "edge gap > center gap"
+  ),
+  stringsAsFactors = FALSE
+)
+
+figure3_summary <- data.frame(
+  metric = c(
+    "crude bias decreases with sigma_e3^2",
+    "amplification gap grows with sigma_e3^2",
+    "adjusted flatter than crude",
+    "crude empirical-theory MAD",
+    "adjusted empirical-theory MAD"
+  ),
+  empirical = c(
+    sprintf("%.4f", sigma_crude_spearman_emp),
+    sprintf("%.4f", sigma_gap_spearman_emp),
+    sprintf("%.4f", sigma_empirical_flat_ratio),
+    sprintf("%.6f", sigma_crude_theory_mad),
+    sprintf("%.6f", sigma_theory_mad)
+  ),
+  theoretical = c(
+    sprintf("%.4f", sigma_crude_spearman_theory),
+    sprintf("%.4f", sigma_gap_spearman_theory),
+    sprintf("%.4f", sigma_theoretical_flat_ratio),
+    sprintf("%.6f", sigma_crude_theory_mad),
+    sprintf("%.6f", sigma_theory_mad)
+  ),
+  target = c(
+    "Spearman < -0.8",
+    "Spearman > 0.8",
+    "flatness ratio < 0.25",
+    "MAD < 0.01",
+    "MAD < 0.01"
+  ),
+  stringsAsFactors = FALSE
+)
+
 cat("Paper consistency check\n")
 cat(sprintf("nsamp=%d nsim=%d seed=%d\n", args$nsamp, args$nsim, args$seed))
 cat(sprintf("alpha empirical adjusted>=crude count: %d/21\n", alpha_empirical_matches))
@@ -100,11 +182,14 @@ cat(sprintf("alpha crude theoretical peak location: %.1f\n", alpha_peak_theoreti
 cat(sprintf("alpha adjusted flatness ratio (empirical/theoretical): %.4f / %.4f\n", alpha_empirical_flat_ratio, alpha_theoretical_flat_ratio))
 cat(sprintf("sigma adjusted flatness ratio (empirical/theoretical): %.4f / %.4f\n", sigma_empirical_flat_ratio, sigma_theoretical_flat_ratio))
 cat(sprintf("sigma crude Spearman trend (empirical/theoretical): %.4f / %.4f\n",
-            spearman_corr(sigma_results$scenario_value, sigma_results$empirical_crude),
-            spearman_corr(sigma_results$scenario_value, sigma_results$theoretical_crude)))
+            sigma_crude_spearman_emp,
+            sigma_crude_spearman_theory))
 cat(sprintf("sigma amplification-gap Spearman trend (empirical/theoretical): %.4f / %.4f\n",
-            spearman_corr(sigma_results$scenario_value, sigma_empirical_gap),
-            spearman_corr(sigma_results$scenario_value, sigma_theoretical_gap)))
+            sigma_gap_spearman_emp,
+            sigma_gap_spearman_theory))
+
+print_summary_table("Figure 2 shape summary (varying alpha_z)", figure2_summary)
+print_summary_table("Figure 3 shape summary (varying sigma_e3^2)", figure3_summary)
 
 failed <- names(checks)[!unlist(checks)]
 if (length(failed) > 0) {
