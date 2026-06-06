@@ -1,0 +1,30 @@
+# Ignore local/editor artifacts
+.DS_Store
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rproj
+
+# Ignore generated heavy intermediates
+*.rds
+*.RDS
+*.RData
+*.rda
+*.RDA
+
+# Ignore private/restricted source materials if copied nearby
+raw-data/
+private/
+restricted/
+NICHD*/
+submission/
+proposel&form/
+reference/
+abstract&poster/
+slides/
+virtual/
+
+# Keep reproducible lightweight deliverables
+!outputs/*.csv
+!figures/*.pdf
