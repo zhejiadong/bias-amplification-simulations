@@ -1,0 +1,39 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test-and-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install R dependencies
+        run: |
+          Rscript -e 'install.packages(c("testthat", "ggplot2", "tidyr"), repos = "https://cloud.r-project.org")'
+
+      - name: Run unit tests
+        run: Rscript tests/testthat.R
+
+      - name: Run paper-consistency verification
+        run: Rscript scripts/check_paper_consistency.R --nsim=80 --nsamp=1000 --seed=123
+
+      - name: Smoke-generate outputs
+        run: Rscript scripts/run_all.R --nsim=40 --nsamp=800 --seed=123
+
+      - name: Upload generated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: simulation-artifacts
+          path: |
+            outputs/*.csv
+            figures/*.pdf

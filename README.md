@@ -1,8 +1,8 @@
 # Bias amplification simulations
 
-This repository is a clean, public GitHub-ready rewrite of the simulation study from Section 3 of the thesis:
+This repository is a clean, public GitHub-ready rewrite of the simulation study from Section 3 of my master's thesis:
 
-Measuring Bias Amplification in a Linear Model When Instrumental Variables are Related to Measured Confounding.
+Dong, Zhejia, "Measuring Bias Amplification in a Linear Model When Instrumental Variables are Related to Measured Confounding" (2023). Biostatistics Theses and Dissertations. Brown Digital Repository. Brown University Library. https://repository.library.brown.edu/studio/item/bdr:kwzzjyx8/
 
 It reproduces the simulation logic behind two thesis results:
 - bias as the instrument-treatment coefficient alpha_z varies from -1 to 1
@@ -85,6 +85,19 @@ install.packages(c("testthat", "ggplot2", "tidyr"))
 Rscript tests/testthat.R
 ```
 
+## Check that results match the paper qualitatively
+
+```bash
+Rscript scripts/check_paper_consistency.R --nsim=200 --nsamp=2000 --seed=123
+```
+
+This verification script checks the main qualitative conclusions from the thesis paper:
+- adjusted bias is larger than crude bias across the grids
+- theoretical adjusted bias is larger than theoretical crude bias
+- the truth-model bias remains near zero
+- at alpha_z = 0, crude and adjusted bias are nearly equal
+- empirical adjusted bias stays close to theoretical adjusted bias
+
 ## Generate outputs
 
 Smoke test run:
@@ -104,6 +117,14 @@ Outputs written:
 - `outputs/sigma_e3_results.csv`
 - `figures/alpha_z_bias.pdf`
 - `figures/sigma_e3_bias.pdf`
+
+## Citation
+
+Please cite both this repository and the underlying master's thesis. A machine-readable citation is provided in `CITATION.cff`.
+
+Suggested thesis citation:
+
+Dong, Zhejia, "Measuring Bias Amplification in a Linear Model When Instrumental Variables are Related to Measured Confounding" (2023). Biostatistics Theses and Dissertations. Brown Digital Repository. Brown University Library. https://repository.library.brown.edu/studio/item/bdr:kwzzjyx8/
 
 ## Notes on the real-data application
 

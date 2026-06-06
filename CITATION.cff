@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "Bias amplification simulations"
+message: "If you use this repository, please cite the software and the underlying master thesis."
+authors:
+  - family-names: "Dong"
+    given-names: "Zhejia"
+repository-code: "https://github.com/zhejiadong/bias-amplification-simulations"
+license: "MIT"
+preferred-citation:
+  type: thesis
+  authors:
+    - family-names: "Dong"
+      given-names: "Zhejia"
+  title: "Measuring Bias Amplification in a Linear Model When Instrumental Variables are Related to Measured Confounding"
+  year: 2023
+  publisher: "Brown University Library"
+  institution: "Brown University"
+  collection-title: "Biostatistics Theses and Dissertations"
+  url: "https://repository.library.brown.edu/studio/item/bdr:kwzzjyx8/"
+  thesis-type: "Master's thesis"
+keywords:
+  - causal inference
+  - bias amplification
+  - instrumental variables
+  - simulation
+  - R
