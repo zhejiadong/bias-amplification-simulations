@@ -4,6 +4,15 @@ This repository is a clean, public GitHub-ready rewrite of the simulation study 
 
 Dong, Zhejia, "Measuring Bias Amplification in a Linear Model When Instrumental Variables are Related to Measured Confounding" (2023). Biostatistics Theses and Dissertations. Brown Digital Repository. Brown University Library. https://repository.library.brown.edu/studio/item/bdr:kwzzjyx8/
 
+[![Cite thesis](https://img.shields.io/badge/Cite-Master's%20thesis-1f6feb)](https://repository.library.brown.edu/studio/item/bdr:kwzzjyx8/)
+[![CI](https://github.com/zhejiadong/bias-amplification-simulations/actions/workflows/ci.yml/badge.svg)](https://github.com/zhejiadong/bias-amplification-simulations/actions/workflows/ci.yml)
+
+## How to cite
+
+- Thesis: cite the Brown master's thesis above.
+- Code: cite this GitHub repository as the public simulation-only implementation.
+- Metadata: GitHub-compatible citation metadata is provided in `CITATION.cff`.
+
 It reproduces the simulation logic behind two thesis results:
 - bias as the instrument-treatment coefficient alpha_z varies from -1 to 1
 - bias as the variance of the Z error term sigma_e3^2 varies from 0.5 to 3 with alpha_z fixed at 0.5
@@ -97,6 +106,9 @@ This verification script checks the main qualitative conclusions from the thesis
 - the truth-model bias remains near zero
 - at alpha_z = 0, crude and adjusted bias are nearly equal
 - empirical adjusted bias stays close to theoretical adjusted bias
+- crude alpha_z bias peaks at alpha_z = 0, rising on the negative side and falling on the positive side
+- crude sigma_e3^2 bias decreases as sigma_e3^2 increases, while the amplification gap grows
+- adjusted curves remain comparatively flat, matching the thesis discussion in Sections 3.1 and 3.2
 
 ## Generate outputs
 
