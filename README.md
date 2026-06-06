@@ -138,6 +138,3 @@ Suggested thesis citation:
 
 Dong, Zhejia, "Measuring Bias Amplification in a Linear Model When Instrumental Variables are Related to Measured Confounding" (2023). Biostatistics Theses and Dissertations. Brown Digital Repository. Brown University Library. https://repository.library.brown.edu/studio/item/bdr:kwzzjyx8/
 
-## Notes on the real-data application
-
-The thesis also contains a NICHD SECCYD application involving maternal depression, child BMI, maternal education, and paternal sensitivity. That part is not included in this public repo because the priority here is a privacy-safe code release. If you later want a second private or access-controlled repo for the real-data workflow, that should be reviewed separately.
